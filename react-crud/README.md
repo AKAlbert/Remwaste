@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# Remwaste React CRUD Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Prerequisites
 
-## Available Scripts
+- Node.js (v18 recommended)
+- npm
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+1. **Clone the repository:**
+   ```sh
+   git clone <your-repo-url>
+   cd react-crud
+   ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. **Install root dependencies:**
+   ```sh
+   npm install
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3. **Install frontend dependencies:**
+   ```sh
+   cd frontend
+   npm install
+   cd ..
+   ```
 
-### `npm test`
+4. **Install backend dependencies:**
+   ```sh
+   cd backend
+   npm install
+   cd ..
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+5. **Install Cypress (from project root):**
+   ```sh
+   npm install --save-dev cypress
+   ```
 
-### `npm run build`
+6. **(Optional) Install start-server-and-test for CI:**
+   ```sh
+   npm install --save-dev start-server-and-test
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Running the Application
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Start the Backend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+cd backend
+npm start
+```
+_Backend runs on [http://localhost:5050](http://localhost:5050)_
 
-### `npm run eject`
+### Start the Frontend
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```sh
+cd frontend
+npm start
+```
+_Frontend runs on [http://localhost:3000](http://localhost:3000)_
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Running Tests
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Cypress (End-to-End Tests)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Make sure both backend and frontend are running.**
+2. **Run Cypress from the project root:**
+   ```sh
+   npx cypress open
+   ```
+   or for headless mode:
+   ```sh
+   npx cypress run
+   ```
 
-## Learn More
+### Backend API Tests (Supertest + Jest)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```sh
+cd backend
+npm test
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Continuous Integration (GitHub Actions)
 
-### Code Splitting
+- The workflow in `.github/workflows/nodejs.yml` will:
+  - Install dependencies
+  - Start backend and frontend servers
+  - Run Cypress tests and upload results
+  - Run backend tests and upload results
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Project Structure
 
-### Analyzing the Bundle Size
+```
+react-crud/
+  backend/
+    App.js
+    api.test.js
+    ...
+  frontend/
+    src/
+    ...
+  cypress/
+    e2e/
+      tests.cy.js
+    ...
+  .github/
+    workflows/
+      nodejs.yml
+  .gitignore
+  README.md
+  package.json
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Notes
 
-### Making a Progressive Web App
+- Update API URLs in frontend to match backend port (`5050`).
+- Cypress tests are in the `cypress/e2e/` folder.
+- Backend tests are in `backend/api.test.js`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
