@@ -1,0 +1,54 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: ./backend
+
+      - name: Start backend and frontend, then run Cypress tests
+        run: |
+          npx start-server-and-test \
+            'npm --prefix backend start' http://localhost:5050 \
+            'npm --prefix frontend start' http://localhost:3000 \
+            'npx cypress run --spec "cypress/e2e/**/*.cy.js" --reporter junit --reporter-options "mochaFile=results/cypress/results-[hash].xml"'
+      
+      - name: Upload Cypress test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-results
+          path: ./results/cypress/
+
+      - name: Run backend tests
+        run: npm test -- --ci --reporters=default --reporters=jest-junit
+        working-directory: ./backend
+
+      - name: Upload backend test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-results
+          path: ./backend/junit.xml
