@@ -1,4 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+
+# Babel config
+babel.config.js
 
 # Node dependencies
 /node_modules/
@@ -48,6 +51,9 @@ Thumbs.db
 # Optional: Ignore backend build/output
 /backend/build/
 /backend/dist/
+/backend/node_modules/
+/backend/package-lock.json/
+.package-lock.json/
 
 # Package lock files
 package-lock.json
@@ -56,3 +62,4 @@ pnpm-lock.yaml
 
 # Cypress output
 /cypress/videos/
+/cypress/screenshots/
