@@ -1,17 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
 const app = express();
 
-// Move CORS to be the first middleware
 app.use(cors({
   origin: 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Simple in-memory storage for demo
 let items = [{ id: 1, name: 'Sample Item' }];

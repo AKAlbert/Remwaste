@@ -48,3 +48,11 @@ Thumbs.db
 # Optional: Ignore backend build/output
 /backend/build/
 /backend/dist/
+
+# Package lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Cypress output
+/cypress/videos/
