@@ -42,6 +42,25 @@
    npm install --save-dev start-server-and-test
    ```
 
+7. **Install code coverage tools:**
+   - For backend (Jest):  
+     ```sh
+     npm install --save-dev jest jest-junit
+     ```
+   - For frontend (React):  
+     ```sh
+     npm install --save-dev @testing-library/react @testing-library/jest-dom
+     ```
+   - For Cypress coverage:  
+     ```sh
+     npm install --save-dev @cypress/code-coverage nyc
+     ```
+
+8. **Install visual snapshot tool for Cypress:**
+   ```sh
+   npm install --save-dev cypress-image-snapshot
+   ```
+
 ## Running the Application
 
 ### Start the Backend
@@ -74,12 +93,58 @@ _Frontend runs on [http://localhost:3000](http://localhost:3000)_
    npx cypress run
    ```
 
+#### Cypress Code Coverage
+
+- Add the following to your `cypress/support/e2e.js`:
+  ```js
+  import '@cypress/code-coverage/support';
+  ```
+- Add the following to your `cypress/plugins/index.js`:
+  ```js
+  module.exports = (on, config) => {
+    require('@cypress/code-coverage/task')(on, config);
+    return config;
+  };
+  ```
+- After running Cypress tests, coverage reports will be in `/coverage`.
+
+#### Cypress Visual Snapshots
+
+- Add to your `cypress/support/e2e.js`:
+  ```js
+  import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
+  addMatchImageSnapshotCommand();
+  ```
+- Example usage in a test:
+  ```js
+  it('should match previous UI snapshot', () => {
+    cy.visit('http://localhost:3000');
+    cy.matchImageSnapshot();
+  });
+  ```
+
 ### Backend API Tests (Supertest + Jest)
 
 ```sh
 cd backend
 npm test
 ```
+
+#### Backend Code Coverage
+
+```sh
+cd backend
+npm test -- --coverage
+```
+_Coverage reports will be in `/backend/coverage`._
+
+### Frontend Unit Tests (React)
+
+```sh
+cd frontend
+npm test -- --coverage
+```
+_Coverage reports will be in `/frontend/coverage`._
 
 ## Continuous Integration (GitHub Actions)
 
@@ -88,6 +153,8 @@ npm test
   - Start backend and frontend servers
   - Run Cypress tests and upload results
   - Run backend tests and upload results
+  - Collect code coverage reports
+  - Save Cypress visual snapshots (if configured)
 
 ## Project Structure
 
@@ -96,13 +163,20 @@ react-crud/
   backend/
     App.js
     api.test.js
+    coverage/
     ...
   frontend/
     src/
+    coverage/
     ...
   cypress/
     e2e/
       tests.cy.js
+    support/
+      e2e.js
+    plugins/
+      index.js
+    screenshots/
     ...
   .github/
     workflows/
@@ -117,5 +191,7 @@ react-crud/
 - Update API URLs in frontend to match backend port (`5050`).
 - Cypress tests are in the `cypress/e2e/` folder.
 - Backend tests are in `backend/api.test.js`.
+- Code coverage reports are generated in `/coverage` folders.
+- Visual snapshots are stored in `cypress/screenshots/`.
 
 ---
